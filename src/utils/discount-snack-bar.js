@@ -1,7 +1,6 @@
 import { PaymentMethodValidator } from "./payment-method-validator.js";
 
 export class Discount {
-    constructor() { }
 
     static discount(paymentMethod, productValue) {
         const DISCOUNT_PERCENTAGE = 5;
@@ -10,12 +9,17 @@ export class Discount {
         const methodIsValid = validatePaymentMethod.validatePaymentMethod(paymentMethod);
         if (methodIsValid) {
             if (
-                paymentMethod === PaymentMethodValidator.VALID_OPTIONS[0] ||
-                paymentMethod === PaymentMethodValidator.VALID_OPTIONS[1]
+                paymentMethod === PaymentMethodValidator.VALID_OPTIONS[0]
             ) {
                 productValue -= Discount.discountCalculator(DISCOUNT_PERCENTAGE, productValue);
                 return productValue;
             }
+            else if (
+                paymentMethod === PaymentMethodValidator.VALID_OPTIONS[1]
+            ) {
+                return productValue;
+            }
+
             productValue += Discount.discountCalculator(ADDITIONAL_PERCENTAGE, productValue);
             return productValue;
         }
@@ -27,3 +31,4 @@ export class Discount {
     }
 }
 
+// alterar logica de debito, refatorar product extras

@@ -12,19 +12,47 @@ export class Pedidos {
     ];
 
     static validateExtraItemWithMainItem(itens) {
+
         const itemsWithoutQuantity = [];
 
         for (let i = 0; i < itens.length; i++) {
             itemsWithoutQuantity.push(itens[i].split(',')[0]);
         }
         if (
+            itemsWithoutQuantity.includes(Pedidos.CARDAPIO[1].cod) && // cafe chantili  e sanduiche
+            itemsWithoutQuantity.includes(Pedidos.CARDAPIO[0].cod) &&
+            itemsWithoutQuantity.includes(Pedidos.CARDAPIO[3].cod)
+        ) {
+            return true;
+        }
+
+        else if (
+            itemsWithoutQuantity.includes(Pedidos.CARDAPIO[0].cod) &&// cafe chantili  e queijo
+            itemsWithoutQuantity.includes(Pedidos.CARDAPIO[1].cod) &&
+            itemsWithoutQuantity.includes(Pedidos.CARDAPIO[4].cod)
+
+        ) {
+
+            return true;
+        }
+        else if (
+            itemsWithoutQuantity.includes(Pedidos.CARDAPIO[3].cod) &&
+            itemsWithoutQuantity.includes(Pedidos.CARDAPIO[1].cod) &&
+            itemsWithoutQuantity.includes(Pedidos.CARDAPIO[4].cod)
+
+        ) {
+
+            return true;
+        }
+
+        else if (
             itemsWithoutQuantity.includes(Pedidos.CARDAPIO[1].cod) &&
             !itemsWithoutQuantity.includes(Pedidos.CARDAPIO[0].cod)
         ) {
             console.log('Item extra não pode ser pedido sem o principal');
             return false;
         }
-        if (
+        else if (
             itemsWithoutQuantity.includes(Pedidos.CARDAPIO[4].cod) &&
             !itemsWithoutQuantity.includes(Pedidos.CARDAPIO[3].cod)
         ) {
@@ -32,8 +60,46 @@ export class Pedidos {
             return false;
         }
 
-        if()
+        return true;
 
+    }
 
+    static CalculatePurchaseAmount(products) {
+        console.log(products);
+    }
+
+    static productQuantityValidator(products) {
+        let error = null;
+        const productQuantity = [];
+        for (let i = 0; i < products.length; i++) {
+            productQuantity.push(products[i][1]);
+        }
+        for (let i = 0; i < productQuantity.length; i++) {
+            try {
+                productQuantity[i] = Number(productQuantity[i]);
+            } catch (error) {
+
+            }
+            if (isNaN(productQuantity[i])) {
+                error = true
+            }
+        }
+        if (error) {
+            console.log('quantidade invalida');
+            return false;
+        } else {
+            console.log('quantidade valida');
+            return true
+        }
+
+    }
+
+    static itemCodeChecker() {
+        const arrayCodes = Pedidos.CARDAPIO.reduce(
+            (product) => {
+                return product.cod;
+            }
+        );
+         console.log(arrayCodes);
     }
 }

@@ -14,5 +14,3 @@ export class PaymentMethodValidator {
         return true;
     }
 }
-
-PaymentMethodValidator.validatePaymentMethod('crédito');
