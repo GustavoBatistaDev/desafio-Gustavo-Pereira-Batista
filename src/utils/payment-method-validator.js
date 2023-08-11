@@ -3,7 +3,7 @@ import { InvalidPaymentMethodError } from "../errors/errors.js";
 export class PaymentMethodValidator {
     constructor() { }
 
-    static VALID_OPTIONS = ['dinheiro', 'débito', 'crédito'];
+    static VALID_OPTIONS = ['dinheiro', 'debito', 'credito'];
 
     static validatePaymentMethod(paymentMethod) {
         paymentMethod = paymentMethod.toLowerCase();
