@@ -37,20 +37,20 @@ export class CaixaDaLanchonete {
                     {
                         prod: quantityAndAeparateProduct[i][0],
                         amount: quantityAndAeparateProduct[i][1],
-                        totalPrice: Pedidos.getPrice(quantityAndAeparateProduct[i][0] ) * ( quantityAndAeparateProduct[i][1]),
+                        totalPrice: Pedidos.getPrice(quantityAndAeparateProduct[i][0]) * (quantityAndAeparateProduct[i][1]),
                     }
                 );
             }
             const totalPrice = shoppingCart.reduce((total, product) => {
                 return total + product.totalPrice;
             }, 0);
-            
+
+            console.log(Discount.discount(metodoDePagamento, totalPrice).toFixed(2));
+            return Discount.discount(metodoDePagamento, totalPrice).toFixed(2);
         }
-        return totalPrice.toFixed(2);
+
     }
 }
 
 
-CaixaDaLanchonete.calcularValorDaCompra('debito', ['cafe,2', 'chantily,1', 'salgado,2']);
-
-
+CaixaDaLanchonete.calcularValorDaCompra(['cafe,1','chantily,1']);

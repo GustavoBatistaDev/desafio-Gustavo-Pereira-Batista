@@ -6,7 +6,7 @@ export class Discount {
         const DISCOUNT_PERCENTAGE = 5;
         const ADDITIONAL_PERCENTAGE = 3;
 
-        const methodIsValid = validatePaymentMethod.validatePaymentMethod(paymentMethod);
+        const methodIsValid = PaymentMethodValidator.validatePaymentMethod(paymentMethod);
         if (methodIsValid) {
             if (
                 paymentMethod === PaymentMethodValidator.VALID_OPTIONS[0]

@@ -18,10 +18,10 @@ export class Pedidos {
             itemsWithoutQuantity.push(itens[i].split(',')[0]);
         }
         if (
-            itemsWithoutQuantity.includes(Pedidos.CARDAPIO[0].cod) &&
-            !itemsWithoutQuantity.includes(Pedidos.CARDAPIO[1].cod) ||
-            itemsWithoutQuantity.includes(Pedidos.CARDAPIO[3].cod) &&
-            !itemsWithoutQuantity.includes(Pedidos.CARDAPIO[4].cod)
+            itemsWithoutQuantity.includes(Pedidos.CARDAPIO[1].cod) &&
+            !itemsWithoutQuantity.includes(Pedidos.CARDAPIO[0].cod) ||
+            itemsWithoutQuantity.includes(Pedidos.CARDAPIO[4].cod) &&
+            !itemsWithoutQuantity.includes(Pedidos.CARDAPIO[3].cod)
         ) {
             console.log("Item extra não pode ser pedido sem o principal");
             return false;
@@ -34,12 +34,9 @@ export class Pedidos {
             prod => prod.cod === cod
         );
         return product[0].value;
-
     }
- 
 
     static productQuantityValidator(products) {
-
         let error = null;
         const productQuantity = [];
         for (let i = 0; i < products.length; i++) {
@@ -49,7 +46,6 @@ export class Pedidos {
             try {
                 productQuantity[i] = Number(productQuantity[i]);
             } catch (error) {
-
             }
             if (isNaN(productQuantity[i])) {
                 error = true
@@ -59,10 +55,8 @@ export class Pedidos {
             console.log('quantidade invalida');
             return false;
         } else {
-
             return true
         }
-
     }
 
     static itemCodeChecker(cod) {
@@ -70,6 +64,5 @@ export class Pedidos {
 
         const codeChecked = codArray.includes(cod);
         if (!codeChecked) console.log('Item inválido!');
-
     }
 }
