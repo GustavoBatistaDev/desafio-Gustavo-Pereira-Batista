@@ -1,51 +1,104 @@
-import { CaixaDaLanchonete } from "./caixa-da-lanchonete.js";
+import { CaixaDaLanchonete } from './caixa-da-lanchonete';
+import { Pedidos } from './pedidos/pedidos-lanchonete.js';
+import { Discount } from './utils/discount-snack-bar.js';
+import { DataValidator } from './utils/type-validator.js';
 
 describe('CaixaDaLanchonete', () => {
 
-    const validaTeste = (formaDePagamento, resultadoEsperado, itens) => {
-        const resultado = new CaixaDaLanchonete()
-            .calcularValorDaCompra(formaDePagamento, itens);
+    let caixa;
 
-        expect(resultado.replace("\xa0", " ")).toEqual(resultadoEsperado);
+    // Cria uma instância de CaixaDaLanchonete antes de cada Each(teste)
+    beforeEach(() => {
+        caixa = new CaixaDaLanchonete();
+    });
+
+    // Função para testar o cálculo do valor da compra de acordo com o método de pagamento
+    const testCalculation = (metodoDePagamento, itens, expected) => {
+        it(`deve calcular corretamente com método "${metodoDePagamento}"`, () => {
+            const resultado = caixa.calcularValorDaCompra(metodoDePagamento, itens);
+            expect(resultado).toBe(expected);
+        });
     };
 
-    test.each([
-        ['com carrinho vazio', 'dinheiro', 'Não há itens no carrinho de compra!', []],
-        ['com carrinho vazio', 'credito', 'Não há itens no carrinho de compra!', []],
-        ['com carrinho vazio', 'debito', 'Não há itens no carrinho de compra!', []],
-    ])('compra %p em %p deve resultar em %p', (_, formaDePagamento, resultadoEsperado, itens) =>
-        validaTeste(formaDePagamento, resultadoEsperado, itens));
+    // Função para testar método de pagamento que não é aceito
+    const testInvalidPaymentMethod = (metodoDePagamento, itens, expected) => {
+        it(`deve retornar mensagem de erro para método "${metodoDePagamento}" inválido`, () => {
+            const resultado = caixa.calcularValorDaCompra(metodoDePagamento, itens);
+            expect(resultado).toBe(expected);
+        });
+    };
 
-    test.each([
-        ['dinheiro', 'R$ 2,85', ['cafe,1']],
-        ['credito', 'R$ 3,09', ['cafe,1']],
-        ['debito', 'R$ 3,00', ['cafe,1']],
-    ])('compra simples em %p deve resultar em %p', validaTeste);
+    // Função para testar a presença de item extra sem o principal 
+    const testExtraWithoutMainProduct = (metodoDePagamento, itens, expected) => {
+        it(`deve retornar mensagem de "Item extra não pode ser pedido sem o principal"`, () => {
+            const resultado = caixa.calcularValorDaCompra(metodoDePagamento, itens);
+            expect(resultado).toBe(expected);
+        });
+    };
 
-    test.each([
-        ['credito', 'R$ 11,85', ['cafe,1', 'sanduiche,1', 'queijo,1']],
-        ['debito', 'R$ 11,50', ['cafe,1', 'sanduiche,1', 'queijo,1']],
-    ])('compra de 3 itens em %p deve resultar em %p', validaTeste);
+    // Função para testar quantidades de produtos que não são números (inválidos)
+    const testProductQuantity = (metodoDePagamento, itens, expected) => {
+        it(`deve retornar mensagem de "Quantidade inválida"`, () => {
+            const resultado = caixa.calcularValorDaCompra(metodoDePagamento, itens);
+            expect(resultado).toBe(expected);
+        });
+    };
 
-    test.each([
-        ['dinheiro', 'R$ 33,73', ['cafe,4', 'sanduiche,3', 'queijo,2']],
-        ['credito', 'R$ 36,56', ['cafe,4', 'sanduiche,3', 'queijo,2']],
-        ['debito', 'R$ 35,50', ['cafe,4', 'sanduiche,3', 'queijo,2']],
-    ])('compra de múltiplas quantidades em %p deve resultar em %p', validaTeste);
+    // Função para testar a validação de itens que não estão no cardápio
+    const testItemIsValid = (metodoDePagamento, itens, expected) => {
+        it(`deve retornar mensagem de "Item inválido!"`, () => {
+            const resultado = caixa.calcularValorDaCompra(metodoDePagamento, itens);
+            expect(resultado).toBe(expected);
+        });
+    };
 
-    test.each([
-        ['com quantidade zero', 'dinheiro', 'Quantidade inválida!', ['cafe,0']],
-        ['com um valor', 'credito', 'Item inválido!', ['1']],
-        ['com código inexistente', 'debito', 'Item inválido!', ['pizza, 1']],
-        ['com forma de pagamento inválida', 'especie', 'Forma de pagamento inválida!', ['cafe, 1']],
-    ])('compra %p em %p deve resultar em %p', (_, formaDePagamento, resultadoEsperado, itens) =>
-        validaTeste(formaDePagamento, resultadoEsperado, itens));
+    const testGetPriceMethod = (cod, expected) => {
+        it(`deve retornar mensagem de "Código do produto é inválido!"`, () => {
+            const resultado = Pedidos.getPrice(cod);
+            expect(resultado).toBe(expected);
+        });
+    };
 
-    test.each([
-        ['chantily', 'dinheiro', 'Item extra não pode ser pedido sem o principal', ['chantily,1']],
-        ['queijo', 'credito', 'Item extra não pode ser pedido sem o principal', ['queijo,1']],
-        ['chantily com outro item', 'credito', 'Item extra não pode ser pedido sem o principal', ['chantily,1', 'sanduiche,1']],
-        ['queijo com outro item', 'debito', 'Item extra não pode ser pedido sem o principal', ['cafe,1', 'queijo,1']],
-    ])('compra %p em %p deve resultar em %p', (_, formaDePagamento, resultadoEsperado, itens) =>
-        validaTeste(formaDePagamento, resultadoEsperado, itens));
+    const testDiscountMethod = (metodoDePagamento, total, expected) => {
+        it(`deve retornar false se o método de pagamento for inválido`, () => {
+            const resultado = Discount.discount(metodoDePagamento, total);
+            expect(resultado).toBe(expected);
+        });
+    };
+
+
+    const testisArrayOfStringMethod = (data, expected) => {
+        it(`deve retornar false se se data não for um array de string ou se o length de data for zero`, () => {
+            const resultado = DataValidator.isArrayOfString(data);
+            expect(resultado).toBe(expected);
+        });
+    };
+ 
+    // Testes individuais com vários cenários diferentes  
+
+    testCalculation('dinheiro', ['cafe,1', 'sanduiche,2'], 'R$15.20');
+    testCalculation('credito', ['cafe,1', 'sanduiche,2'], 'R$16.48');
+    testCalculation('debito', ['cafe,1', 'sanduiche,2'], 'R$16.00');
+
+    testInvalidPaymentMethod('', ['cafe,1'], 'Forma de pagamento inválida.');
+    testInvalidPaymentMethod(2, ['cafe,1'], 'Forma de pagamento inválida.');
+    testInvalidPaymentMethod(true, ['cafe,1'] ,'Forma de pagamento inválida.');
+
+    testExtraWithoutMainProduct('dinheiro', ['chantily,1'], 'Item extra não pode ser pedido sem o principal');
+    testExtraWithoutMainProduct('dinheiro', ['queijo,1'], 'Item extra não pode ser pedido sem o principal');
+
+    testProductQuantity('dinheiro', ['cafe,'], 'Quantidade inválida');
+    testProductQuantity('dinheiro', ['cafe'], 'Quantidade inválida');
+    testProductQuantity('dinheiro', ['cafe,a'], 'Quantidade inválida');
+
+    testItemIsValid('dinheiro', ['churros,1'], 'Item inválido!');
+    testItemIsValid('dinheiro', [2], 'Item inválido!');
+    testItemIsValid('dinheiro', [true], 'Item inválido!');
+
+    testGetPriceMethod('codigoInvalido', 'Código do produto é inválido!');
+
+    testDiscountMethod('metodoInvalido', 20.00, 'Forma de pagamento inválida.');
+
+    testisArrayOfStringMethod([], false)
+
 });

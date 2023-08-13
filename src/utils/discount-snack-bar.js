@@ -11,7 +11,7 @@ export class Discount {
         const ADDITIONAL_PERCENTAGE = 3;
 
         //Valida se o método de pagamento é válido. Se o método for válido, calcula e aplica o desconto adequado
-        if (PaymentMethodValidator.validatePaymentMethod(paymentMethod)) {
+        if (PaymentMethodValidator.validatePaymentMethod(paymentMethod) !== 'Forma de pagamento inválida.') {
             if (
                 paymentMethod === PaymentMethodValidator.VALID_OPTIONS[0]
             ) {
@@ -32,10 +32,10 @@ export class Discount {
         }
 
         // Retorna o valor original do produto caso o método de pagamento não seja válido
-        return false;
+        return PaymentMethodValidator.validatePaymentMethod(paymentMethod);
     }
 
-    // Método estático que calcula o valor do desconto com base no percentual e valor do produto
+    // Método estático que calcula o valor do desconto com base no percentual e valor do produto, para evitar duplicações de codigo.
     static calculateDiscount(percentage, value) {
         return value * percentage / 100;
     }

@@ -21,7 +21,7 @@ export class Pedidos {
 
         // Separa os itens da quantidade e os armazena em um Array
         for (let i = 0; i < itens.length; i++) {
-            itemsWithoutQuantity.push(itens[i].split(',')[0]); 
+            itemsWithoutQuantity.push(itens[i].split(',')[0]);
         }
 
         // Verifica se um item extra é pedido sem seu principal correspondente
@@ -32,7 +32,7 @@ export class Pedidos {
             !itemsWithoutQuantity.includes(Pedidos.CARDAPIO[3].cod)
         ) {
             MessageLogger.logMessage("Item extra não pode ser pedido sem o principal");
-            return false;
+            return "Item extra não pode ser pedido sem o principal";
         }
         return true;
     }
@@ -42,21 +42,22 @@ export class Pedidos {
         const product = Pedidos.CARDAPIO.filter(
             prod => prod.cod === cod
         );
-        return product[0].value;
+
+        return product.length > 0 ? product[0].value : 'Código do produto é inválido!';
     }
 
     // Valida a quantidade de produtos, convertendo-os para números
     static productQuantityValidator(products) {
-        if(!Array.isArray(products)){
+        if (!Array.isArray(products)) {
             return;
         }
-        
+
         let error = null;
         const productQuantity = [];
 
         // Separa os itens da quantidade e os armazena em um Array
         for (let i = 0; i < products.length; i++) {
-            productQuantity.push(products[i][1]); ['code', 3]
+            productQuantity.push(products[i][1]);['code', 3]
         }
 
         // Converte as quantidades de produtos para números e verifica se são válidos
@@ -77,7 +78,7 @@ export class Pedidos {
         // Retorna falso se houver erro de quantidade inválida, caso contrário, retorna true
         if (error) {
             MessageLogger.logMessage('Quantidade inválida');
-            return false;
+            return 'Quantidade inválida';
         } else {
             return true;
         }
@@ -89,8 +90,8 @@ export class Pedidos {
         // Verifica se o código está presente no array de códigos do cardápio
         const codeChecked = codArray.includes(cod);
         if (!codeChecked) {
-            MessageLogger.logMessage(`"${cod}" é um item inválido`);
-            return false;
+            MessageLogger.logMessage('Item inválido!');
+            return 'Item inválido!';
         }
         return true;
     }

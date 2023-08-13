@@ -14,7 +14,7 @@ export class PaymentMethodValidator {
             !paymentMethod
         ) {
             MessageLogger.logMessage('Forma de pagamento inválida.'); // Possibilidade de implementar o customError InvalidPaymentMethodError
-            return false; // Retorna falso se o método de pagamento não for válido
+            return 'Forma de pagamento inválida.'; // Retorna falso se o método de pagamento não for válido
         }
         return true; // Retorna verdadeiro se o método de pagamento for válido
     }
