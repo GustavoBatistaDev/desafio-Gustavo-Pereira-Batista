@@ -1,6 +1,6 @@
 import { CaixaDaLanchonete } from './caixa-da-lanchonete';
 import { Pedidos } from './pedidos/pedidos-lanchonete.js';
-import { Discount } from './utils/discount-snack-bar.js';
+import { Discount } from './discount/discount-snack-bar';
 import { DataValidator } from './utils/type-validator.js';
 
 describe('CaixaDaLanchonete', () => {

@@ -1,5 +1,5 @@
 // Importa o módulo MessageLogger para registrar mensagens
-import { MessageLogger } from "./logs.js";
+import { MessageLogger } from "../utils/logs";
 
 // Classe responsável por validar métodos de pagamento
 export class PaymentMethodValidator {

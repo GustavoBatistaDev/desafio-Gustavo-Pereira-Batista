@@ -1,5 +1,5 @@
-import { DataValidator } from "./type-validator.js";
-import { PaymentMethodValidator } from "./payment-method-validator.js";
+import { DataValidator } from "../utils/type-validator";
+import { PaymentMethodValidator } from "../paymentValidator/payment-method-validator.js";
 
 export class ValidatePurchase {
     static isValidPurchase(metodoDePagamento, itens) {

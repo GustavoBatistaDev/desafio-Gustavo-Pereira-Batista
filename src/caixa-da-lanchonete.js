@@ -1,11 +1,11 @@
 // Importando módulos e classes necessárias
-import { Discount } from "./utils/discount-snack-bar.js";
+import { Discount } from "./discount/discount-snack-bar.js";
 import { Pedidos } from "./pedidos/pedidos-lanchonete.js";
 import { MessageLogger } from "./utils/logs.js";
-import { ValidatePurchase } from "./utils/validate-purchase.js";
-import { ProcessItems } from "./utils/process-items.js";
-import { OrderValidate } from "./utils/order-valid.js";
-import { ShoppingCart } from "./utils/shopping-cart.js";
+import { ValidatePurchase } from "./pedidos/validate-purchase.js";
+import { ProcessItems } from "./pedidos/process-items.js";
+import { OrderValidate } from "./pedidos/order-valid.js";
+import { ShoppingCart } from "./shoppingCart/shopping-cart.js";
 
 // Classe responsável por calcular o valor da compra na lanchonete
 export class CaixaDaLanchonete {
@@ -20,17 +20,9 @@ export class CaixaDaLanchonete {
         // Verifica a validade da compra antes de prosseguir 
         const validationMessage = ValidatePurchase.isValidPurchase(metodoDePagamento, itens);
 
-        if (validationMessage === 'Não há itens no carrinho de compra!') {
+        if (validationMessage !== true) {
             return validationMessage;
         }
-        
-        if (validationMessage === 'Item inválido!') {
-            return validationMessage;
-        }
-        
-        else if (validationMessage === 'Forma de pagamento inválida.') {
-            return validationMessage;
-        }        
 
         // Processa os itens para criar um carrinho de compras
         const quantityAndSeparateProduct = ProcessItems.processItems(itens);
@@ -39,8 +31,8 @@ export class CaixaDaLanchonete {
             Pedidos.productQuantityValidator(quantityAndSeparateProduct) === 'Quantidade inválida'
         ) {
             return 'Quantidade inválida';
-            
-        }else if(quantityAndSeparateProduct === 'Item inválido!'){
+
+        } else if (quantityAndSeparateProduct === 'Item inválido!') {
             return 'Item inválido!';
         }
 
@@ -65,4 +57,5 @@ export class CaixaDaLanchonete {
 
 }
 
-const caixa = new CaixaDaLanchonete().calcularValorDaCompra('dinheiro', ['cafe,0']);
+const caixa = new CaixaDaLanchonete().calcularValorDaCompra('dinheiro', ['cafe,1']);
+
