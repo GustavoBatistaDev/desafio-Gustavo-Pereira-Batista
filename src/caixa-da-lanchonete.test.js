@@ -20,6 +20,14 @@ describe('CaixaDaLanchonete', () => {
         });
     };
 
+    const testEmptyShoppingCart = (metodoDePagamento, itens, expected) => {
+        it(`Deve retornar "Não há itens no carrinho de compra!"`, () => {
+            const resultado = caixa.calcularValorDaCompra(metodoDePagamento, itens);
+            expect(resultado).toBe(expected);
+        });
+    };
+
+
     // Função para testar método de pagamento que não é aceito
     const testInvalidPaymentMethod = (metodoDePagamento, itens, expected) => {
         it(`deve retornar mensagem de erro para método "${metodoDePagamento}" inválido`, () => {
@@ -67,18 +75,30 @@ describe('CaixaDaLanchonete', () => {
     };
 
 
-    const testisArrayOfStringMethod = (data, expected) => {
-        it(`deve retornar false se se data não for um array de string ou se o length de data for zero`, () => {
+    const testIsArrayOfStringMethod = (data, expected) => {
+        it(
+            `deve retornar "Não há itens no carrinho de compra!"se data não for
+             um array, ou se o length for 0. Deve retornar "Item inválido"
+             caso não seja um array de strings`, () => {
             const resultado = DataValidator.isArrayOfString(data);
+            expect(resultado).toBe(expected);
+        }
+        );
+    };
+    
+    const testCalculateDiscountMethod = (percentage, value, expected) => {
+        it(`deve calcular a porcentagem de um número e retorna-lo`, () => {
+            const resultado = Discount.calculateDiscount(percentage, value);
             expect(resultado).toBe(expected);
         });
     };
- 
     // Testes individuais com vários cenários diferentes  
 
     testCalculation('dinheiro', ['cafe,1', 'sanduiche,2'], 'R$15.20');
     testCalculation('credito', ['cafe,1', 'sanduiche,2'], 'R$16.48');
     testCalculation('debito', ['cafe,1', 'sanduiche,2'], 'R$16.00');
+
+    testEmptyShoppingCart('dinheiro', [], 'Não há itens no carrinho de compra!');
 
     testInvalidPaymentMethod('', ['cafe,1'], 'Forma de pagamento inválida.');
     testInvalidPaymentMethod(2, ['cafe,1'], 'Forma de pagamento inválida.');
@@ -99,6 +119,11 @@ describe('CaixaDaLanchonete', () => {
 
     testDiscountMethod('metodoInvalido', 20.00, 'Forma de pagamento inválida.');
 
-    testisArrayOfStringMethod([], false)
+    testIsArrayOfStringMethod([], 'Não há itens no carrinho de compra!')
+    testIsArrayOfStringMethod([2, 'cafe'], 'Item inválido!')
+
+    testCalculateDiscountMethod(10, 100, 10);
+
+
 
 });

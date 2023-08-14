@@ -9,12 +9,12 @@ export class DataValidator {
         // Verifica se o dado é um array ou se o length do array é 0
         if (!Array.isArray(data) || data.length === 0) {
             MessageLogger.logMessage('Não há itens no carrinho de compra!');
-            return false;
+            return 'Não há itens no carrinho de compra!';
         }
         // verifica se todos os itens são strings
         else if (!data.every(item => typeof item === 'string')) {
             MessageLogger.logMessage('Item inválido!');
-            return false;
+            return 'Item inválido!';
         }
 
         return true;

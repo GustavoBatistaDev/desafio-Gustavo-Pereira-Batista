@@ -69,6 +69,7 @@ export class Pedidos {
                 }
             } catch (error) {
                 // tratar o erro
+                console.log(error);
             }
             if (isNaN(productQuantity[i])) {
                 error = true; // Define erro como true se a quantidade não for válida

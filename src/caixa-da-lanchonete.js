@@ -16,14 +16,19 @@ export class CaixaDaLanchonete {
     // Método para calcular o valor da compra
     calcularValorDaCompra(metodoDePagamento, itens) {
         // Verifica a validade da compra antes de prosseguir 
-        
-        if(!this.isValidPurchase(metodoDePagamento, itens)){
-            return 'Item inválido!';
-        }
+        const validationMessage = this.isValidPurchase(metodoDePagamento, itens);
 
-        else if (this.isValidPurchase(metodoDePagamento, itens) === 'Forma de pagamento inválida.') {
-            return 'Forma de pagamento inválida.'; // Retorna caso a compra seja inválida
+        if (validationMessage === 'Não há itens no carrinho de compra!') {
+            return validationMessage;
         }
+        
+        if (validationMessage === 'Item inválido!') {
+            return validationMessage;
+        }
+        
+        else if (validationMessage === 'Forma de pagamento inválida.') {
+            return validationMessage;
+        }        
 
         // Processa os itens para criar um carrinho de compras
         const quantityAndSeparateProduct = this.processItems(itens);
@@ -58,17 +63,17 @@ export class CaixaDaLanchonete {
 
     // Verifica se a compra é válida com base no método de pagamento e nos itens
     isValidPurchase(metodoDePagamento, itens) {
-        if (!DataValidator.isArrayOfString(itens)) {
-            return false; // Retorna falso se os itens não forem um array de strings
+        if(DataValidator.isArrayOfString(itens) === 'Item inválido!'){
+            return 'Item inválido!';
         }
+        if (DataValidator.isArrayOfString(itens) === 'Não há itens no carrinho de compra!') {
+            return 'Não há itens no carrinho de compra!'; // Retorna falso se os itens não forem um array de strings
+        }
+   
         if (
             PaymentMethodValidator.validatePaymentMethod(metodoDePagamento) === 'Forma de pagamento inválida.'
         ) {
             return 'Forma de pagamento inválida.'; // Retorna falso se o método de pagamento for inválido
-        }
-
-        if (!DataValidator.isArrayOfString(itens)) {
-            return false; // Retorna falso se os itens não forem um array de strings
         }
 
         return true; // Retorna verdadeiro se a compra for válida
