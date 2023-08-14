@@ -57,7 +57,7 @@ export class Pedidos {
 
         // Separa os itens da quantidade e os armazena em um Array
         for (let i = 0; i < products.length; i++) {
-            productQuantity.push(products[i][1]);['code', 3]
+            productQuantity.push(products[i][1]);
         }
 
         // Converte as quantidades de produtos para números e verifica se são válidos
@@ -67,9 +67,10 @@ export class Pedidos {
                 if (productQuantity[i] === 0) {
                     error = true;
                 }
-            } catch (error) {
+            } catch (e) {
                 // tratar o erro
-                console.log(error);
+                console.log(e);
+                
             }
             if (isNaN(productQuantity[i])) {
                 error = true; // Define erro como true se a quantidade não for válida

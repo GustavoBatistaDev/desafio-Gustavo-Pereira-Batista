@@ -85,10 +85,17 @@ describe('CaixaDaLanchonete', () => {
         }
         );
     };
-    
+
     const testCalculateDiscountMethod = (percentage, value, expected) => {
         it(`deve calcular a porcentagem de um número e retorna-lo`, () => {
             const resultado = Discount.calculateDiscount(percentage, value);
+            expect(resultado).toBe(expected);
+        });
+    };
+
+    const testThrowTypeError = (products, expected) => {
+        it(`deve calcular a porcentagem de um número e retorna-lo`, () => {
+            const resultado = Pedidos.productQuantityValidator(products);
             expect(resultado).toBe(expected);
         });
     };
@@ -98,12 +105,51 @@ describe('CaixaDaLanchonete', () => {
     testCalculation('credito', ['cafe,1', 'sanduiche,2'], 'R$16.48');
     testCalculation('debito', ['cafe,1', 'sanduiche,2'], 'R$16.00');
 
-    testEmptyShoppingCart('dinheiro', [], 'Não há itens no carrinho de compra!');
+    testCalculation('dinheiro', ['cafe,1'], 'R$2.85');
+    testCalculation('credito', ['cafe,1'], 'R$3.09');
+    testCalculation('debito', ['cafe,1'], 'R$3.00');
 
+    testCalculation('credito', ['cafe,1', 'sanduiche,1', 'queijo,1'], 'R$11.85');
+    testCalculation('debito', ['cafe,1', 'sanduiche,1', 'queijo,1'], 'R$11.50');
+    testCalculation('dinheiro',['cafe,4', 'sanduiche,3', 'queijo,2'], 'R$33.73');
+
+    testCalculation('credito',['cafe,4', 'sanduiche,3', 'queijo,2'], 'R$36.56');
+    testCalculation('debito',['cafe,4', 'sanduiche,3', 'queijo,2'], 'R$35.50');
+    testCalculation('dinheiro',['cafe,0'], 'Quantidade inválida');
+
+    testCalculation('credito',['1'], 'Item inválido!');
+    testCalculation('debito',['pizza,4'], 'Item inválido!');
+    testCalculation('especie',['pizza,4'], 'Forma de pagamento inválida.');
+
+    testCalculation('dinheiro',['chantily,1'], 'Item extra não pode ser pedido sem o principal');
+    testCalculation('dinheiro',['queijo,1'], 'Item extra não pode ser pedido sem o principal');
+    testCalculation('credito',['chantily,1'], 'Item extra não pode ser pedido sem o principal');
+
+    testCalculation('credito',['queijo,1'], 'Item extra não pode ser pedido sem o principal');
+    testCalculation('debito',['chantily,1'], 'Item extra não pode ser pedido sem o principal');
+    testCalculation('debito',['queijo,1'], 'Item extra não pode ser pedido sem o principal');
+
+    testCalculation('credito',['chantily,1', 'sanduiche,1'], 'Item extra não pode ser pedido sem o principal');
+    testCalculation('dinheiro',['queijo,1', 'cafe,1'], 'Item extra não pode ser pedido sem o principal');
+    testCalculation('credito',['queijo,1', 'cafe,1'], 'Item extra não pode ser pedido sem o principal');
+
+    testCalculation('debito',['queijo,1', 'cafe,1'], 'Item extra não pode ser pedido sem o principal');
+    testCalculation('debito',['queijo,1', 'cafe,1', 'chantily,1'], 'Item extra não pode ser pedido sem o principal');
+    testCalculation('dinheiro',['queijo,1', 'cafe,1', 'chantily,1'], 'Item extra não pode ser pedido sem o principal');
+
+    testCalculation('credito',['queijo,1', 'cafe,1', 'chantily,1'], 'Item extra não pode ser pedido sem o principal');
+    testCalculation('dinheiro',['queijo,1', 'sanduiche,1', 'chantily,1'], 'Item extra não pode ser pedido sem o principal');
+    testCalculation('credito',['queijo,1', 'sanduiche,1', 'chantily,1'], 'Item extra não pode ser pedido sem o principal');
+
+    testCalculation('debito',['queijo,1', 'sanduiche,1', 'chantily,1'], 'Item extra não pode ser pedido sem o principal');
+    testEmptyShoppingCart('dinheiro', [], 'Não há itens no carrinho de compra!');
+    testEmptyShoppingCart('debito', [], 'Não há itens no carrinho de compra!');
+
+    testEmptyShoppingCart('credito', [], 'Não há itens no carrinho de compra!');
     testInvalidPaymentMethod('', ['cafe,1'], 'Forma de pagamento inválida.');
     testInvalidPaymentMethod(2, ['cafe,1'], 'Forma de pagamento inválida.');
-    testInvalidPaymentMethod(true, ['cafe,1'] ,'Forma de pagamento inválida.');
 
+    testInvalidPaymentMethod(true, ['cafe,1'], 'Forma de pagamento inválida.');
     testExtraWithoutMainProduct('dinheiro', ['chantily,1'], 'Item extra não pode ser pedido sem o principal');
     testExtraWithoutMainProduct('dinheiro', ['queijo,1'], 'Item extra não pode ser pedido sem o principal');
 
@@ -116,13 +162,13 @@ describe('CaixaDaLanchonete', () => {
     testItemIsValid('dinheiro', [true], 'Item inválido!');
 
     testGetPriceMethod('codigoInvalido', 'Código do produto é inválido!');
-
     testDiscountMethod('metodoInvalido', 20.00, 'Forma de pagamento inválida.');
+    testIsArrayOfStringMethod([], 'Não há itens no carrinho de compra!');
 
-    testIsArrayOfStringMethod([], 'Não há itens no carrinho de compra!')
-    testIsArrayOfStringMethod([2, 'cafe'], 'Item inválido!')
 
+    testIsArrayOfStringMethod([2, 'cafe'], 'Item inválido!');
     testCalculateDiscountMethod(10, 100, 10);
+    testThrowTypeError([['cafe', 'a'] ], 'Quantidade inválida');
 
 
 

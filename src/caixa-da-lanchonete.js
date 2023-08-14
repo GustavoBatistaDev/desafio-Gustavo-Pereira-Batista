@@ -116,4 +116,4 @@ export class CaixaDaLanchonete {
     }
 }
 
-const caixa = new CaixaDaLanchonete().calcularValorDaCompra('dinheiro', [2]);
+const caixa = new CaixaDaLanchonete().calcularValorDaCompra('dinheiro', ['cafe,0']);
