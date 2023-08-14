@@ -1,3 +1,4 @@
+// Importa o módulo MessageLogger para registrar mensagens
 import { MessageLogger } from "./logs.js";
 
 // Classe utilitária para validação de dados
@@ -11,13 +12,12 @@ export class DataValidator {
             MessageLogger.logMessage('Não há itens no carrinho de compra!');
             return 'Não há itens no carrinho de compra!';
         }
-        // verifica se todos os itens são strings
+        // Verifica se todos os itens são strings
         else if (!data.every(item => typeof item === 'string')) {
             MessageLogger.logMessage('Item inválido!');
             return 'Item inválido!';
         }
 
-        return true;
+        return true; // Retorna verdadeiro se o dado for um array válido de strings
     }
 }
-

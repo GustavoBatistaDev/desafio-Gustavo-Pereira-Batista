@@ -1,5 +1,6 @@
-// import { InvalidPaymentMethodError } from "../errors/errors.js";
+// Importa o módulo MessageLogger para registrar mensagens
 import { MessageLogger } from "./logs.js";
+
 // Classe responsável por validar métodos de pagamento
 export class PaymentMethodValidator {
 
@@ -13,7 +14,7 @@ export class PaymentMethodValidator {
             !PaymentMethodValidator.VALID_OPTIONS.includes(paymentMethod) ||
             !paymentMethod
         ) {
-            MessageLogger.logMessage('Forma de pagamento inválida.'); // Possibilidade de implementar o customError InvalidPaymentMethodError
+            MessageLogger.logMessage('Forma de pagamento inválida.');
             return 'Forma de pagamento inválida.'; // Retorna falso se o método de pagamento não for válido
         }
         return true; // Retorna verdadeiro se o método de pagamento for válido

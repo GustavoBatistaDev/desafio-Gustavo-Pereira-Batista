@@ -1,8 +1,6 @@
 import { MessageLogger } from "../utils/logs.js";
 
-
 export class Pedidos {
-
     // Definição do cardápio com códigos, descrições e valores
     static CARDAPIO = [
         { cod: 'cafe', description: 'Café', value: 3.00 },
@@ -39,11 +37,8 @@ export class Pedidos {
 
     // Obtém o valor de um item do cardápio pelo seu código
     static getPrice(cod) {
-        const product = Pedidos.CARDAPIO.filter(
-            prod => prod.cod === cod
-        );
-
-        return product.length > 0 ? product[0].value : 'Código do produto é inválido!';
+        const product = Pedidos.CARDAPIO.find(prod => prod.cod === cod);
+        return product ? product.value : 'Código do produto é inválido!';
     }
 
     // Valida a quantidade de produtos, convertendo-os para números
@@ -68,9 +63,8 @@ export class Pedidos {
                     error = true;
                 }
             } catch (e) {
-                // tratar o erro
+                // Trata o erro
                 console.log(e);
-                
             }
             if (isNaN(productQuantity[i])) {
                 error = true; // Define erro como true se a quantidade não for válida
