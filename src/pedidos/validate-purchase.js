@@ -1,4 +1,4 @@
-import { DataValidator } from "../utils/type-validator";
+import { DataValidator } from "../utils/type-validator.js";
 import { PaymentMethodValidator } from "../paymentValidator/payment-method-validator.js";
 
 export class ValidatePurchase {

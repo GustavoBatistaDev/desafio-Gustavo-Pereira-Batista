@@ -1,4 +1,4 @@
-import { Pedidos } from "../pedidos/pedidos-lanchonete";
+import { Pedidos } from "../pedidos/pedidos-lanchonete.js";
 
 export class ShoppingCart {
     // Calcula o valor total de cada item no carrinho de compras

@@ -1,5 +1,5 @@
 // Importa o módulo PaymentMethodValidator responsável pela validação dos métodos de pagamento
-import { PaymentMethodValidator } from "../paymentValidator/payment-method-validator";
+import { PaymentMethodValidator } from "../paymentValidator/payment-method-validator.js";
 
 // Classe que gerencia o cálculo de descontos
 export class Discount {
